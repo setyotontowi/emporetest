@@ -6,5 +6,13 @@
     <string name="menu_fav">Favorite</string>
     <string name="menu_recent">Recent</string>
 
+    <!-- News View -->
+    <string name="news_title">Ulas Huawei 40 Mate Pro Seharga Motor Sport Bekas - CNN Indonesia</string>
+    <string name="news_desc">Huawei 40 Mate Pro dijual dengan harga Rp15,999 juta di Indonesia.</string>
+    <string name="news_meta">detik.com</string>
+    <string name="news_date">16 Januari 2021 12.32</string>
+    <string name="news_thumbnail">Gambar</string>
+    <string name="news_fav">Favorit</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
