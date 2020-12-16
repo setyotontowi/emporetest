@@ -2,4 +2,5 @@
 <resources>
     <dimen name="news_title">20dp</dimen>
     <dimen name="news_desc">10dp</dimen>
+    <dimen name="placeholderTextHeight">8dp</dimen>
 </resources>
