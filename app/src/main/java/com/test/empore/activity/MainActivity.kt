@@ -16,6 +16,5 @@ class MainActivity : AppCompatActivity() {
 
         (application as App).appComponent.inject(this)
 
-
     }
 }

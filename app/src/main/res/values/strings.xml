@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">EmporeTest</string>
+    <string name="app_name">News Room</string>
 
     <!-- Menu -->
     <string name="menu_home">News</string>
     <string name="menu_fav">Favorite</string>
     <string name="menu_recent">Recent</string>
-    
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
