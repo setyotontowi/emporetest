@@ -1,4 +1,4 @@
-package com.test.empore.fragment
+package com.test.empore.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

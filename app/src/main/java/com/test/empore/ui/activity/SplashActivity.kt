@@ -1,4 +1,4 @@
-package com.test.empore.activity
+package com.test.empore.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
