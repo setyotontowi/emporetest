@@ -6,11 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.empore.App
+import com.test.empore.data.model.News
 import com.test.empore.databinding.FragmentHomeBinding
 import com.test.empore.ui.NewsViewModel
+import com.test.empore.ui.adapter.NewsAdapter
 import javax.inject.Inject
 
 /**
@@ -24,6 +28,8 @@ class HomeFragment : Fragment() {
     lateinit var vmFactory: ViewModelProvider.Factory
     private val newsViewModel: NewsViewModel by viewModels { vmFactory }
     private lateinit var binding: FragmentHomeBinding
+    private val news :MutableList<News> = ArrayList()
+    private lateinit var newsAdapter: NewsAdapter
     private val TAG = "HomeFragment"
 
 
@@ -39,13 +45,26 @@ class HomeFragment : Fragment() {
         (activity?.application as App).appComponent.inject(this)
 
         initObserver()
+        initAdapter()
 
+    }
+
+    private fun initAdapter() {
+        newsAdapter = NewsAdapter(requireContext(), news)
+        binding.news.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.VERTICAL, false)
+        binding.news.adapter = newsAdapter
     }
 
     private fun initObserver() {
         newsViewModel.get("top-headlines", "id")
         newsViewModel.news.observe(viewLifecycleOwner, {
-            Log.d(TAG, "initObserver: $it")
+            news.clear()
+            news.addAll(it.articles)
+            newsAdapter.notifyDataSetChanged()
+            binding.placeholder.stopShimmerAnimation()
+            binding.placeholder.visibility = View.GONE
+            binding.news.visibility = View.VISIBLE
         })
     }
 

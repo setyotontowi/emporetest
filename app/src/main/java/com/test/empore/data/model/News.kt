@@ -3,7 +3,7 @@ package com.test.empore.data.model
 import com.google.gson.annotations.SerializedName
 
 data class News(
-    @SerializedName("sources")
+    @SerializedName("source")
     val source: Source = Source(),
     @SerializedName("author")
     val author:String,
