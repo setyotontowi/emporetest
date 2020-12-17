@@ -1,5 +1,6 @@
 package com.test.empore.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.test.empore.App
 import com.test.empore.data.model.News
 import com.test.empore.databinding.FragmentHomeBinding
 import com.test.empore.ui.NewsViewModel
+import com.test.empore.ui.activity.NewsActivity
 import com.test.empore.ui.adapter.NewsAdapter
 import javax.inject.Inject
 
@@ -54,6 +56,16 @@ class HomeFragment : Fragment() {
         binding.news.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL, false)
         binding.news.adapter = newsAdapter
+
+        newsAdapter.cardListener = {
+            val intent = Intent(context, NewsActivity::class.java)
+            intent.putExtra("URL", it.url)
+            startActivity(intent)
+        }
+
+        newsAdapter.favListener = {
+            newsViewModel.insert(it)
+        }
     }
 
     private fun initObserver() {

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -18,6 +19,10 @@ class NewsAdapter(
     private val context: Context,
     private val news: List<News>
 ): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+
+    var cardListener: ((item: News)->Unit)?=null
+    var favListener:  ((item: News)->Unit)?=null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.news_view, parent, false)
         return NewsViewHolder(v)
@@ -32,9 +37,11 @@ class NewsAdapter(
         Glide.with(context).load(item.imageUrl).into(holder.thumbnail)
 
         holder.card.setOnClickListener{
-            val intent = Intent(context, NewsActivity::class.java)
-            intent.putExtra("URL", item.url)
-            context.startActivity(intent)
+            cardListener?.invoke(item)
+        }
+
+        holder.favorite.setOnClickListener {
+            favListener?.invoke(item)
         }
     }
 
@@ -48,5 +55,6 @@ class NewsAdapter(
         val source: TextView = view.findViewById(R.id.source)
         val thumbnail:ImageView = view.findViewById(R.id.thumbnail)
         val card: CardView = view.findViewById(R.id.card)
+        val favorite: ImageButton = view.findViewById(R.id.favorite)
     }
 }

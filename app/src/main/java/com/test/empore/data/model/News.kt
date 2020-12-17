@@ -6,20 +6,18 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
+@Entity(tableName = "news")
 data class News(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    @SerializedName("source") @Ignore
-    val source: Source = Source(),
-    @ColumnInfo(name = "source")
-    val provider: String?,
+    var id: Int,
+    @SerializedName("source")
+    var source: Source = Source(),
     @SerializedName("author")
-    val author:String?,
+    var author:String?,
     @SerializedName("title")
-    val title:String?,
+    var title:String?,
     @SerializedName("description")
-    val description:String?,
+    var description:String?,
     @SerializedName("url")
     var url: String,
     @SerializedName("urlToImage")
@@ -30,4 +28,6 @@ data class News(
     var content: String?,
     @ColumnInfo(name = "favorite")
     var favorite: Boolean = false
-)
+) {
+    constructor() :this(0, Source(), null, null, null, "", null, null, null, false )
+}
