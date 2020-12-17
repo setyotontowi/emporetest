@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -58,12 +58,14 @@ class HomeFragment : Fragment() {
         binding.news.adapter = newsAdapter
 
         newsAdapter.cardListener = {
+            newsViewModel.insert(it)
             val intent = Intent(context, NewsActivity::class.java)
             intent.putExtra("URL", it.url)
             startActivity(intent)
         }
 
         newsAdapter.favListener = {
+            it.favorite = true
             newsViewModel.insert(it)
         }
     }
