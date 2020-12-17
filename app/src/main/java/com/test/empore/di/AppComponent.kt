@@ -1,7 +1,6 @@
 package com.test.empore.di
 
 import android.content.Context
-import com.test.empore.data.remote.NetworkModule
 import com.test.empore.ui.activity.MainActivity
 import com.test.empore.ui.fragment.FavoriteFragment
 import com.test.empore.ui.fragment.HomeFragment

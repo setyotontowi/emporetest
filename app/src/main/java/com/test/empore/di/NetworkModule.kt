@@ -1,4 +1,4 @@
-package com.test.empore.data.remote
+package com.test.empore.di
 
 import com.test.empore.data.remote.services.NewsService
 import dagger.Module
