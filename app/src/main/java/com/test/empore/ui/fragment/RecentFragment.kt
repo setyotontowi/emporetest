@@ -57,15 +57,14 @@ class RecentFragment : Fragment() {
         binding.news.adapter = newsAdapter
 
         newsAdapter.cardListener = {
-            newsViewModel.insert(it)
             val intent = Intent(context, NewsActivity::class.java)
             intent.putExtra("URL", it.url)
             startActivity(intent)
         }
 
         newsAdapter.favListener = {
-            it.favorite = true
-            newsViewModel.insert(it)
+            it.favorite = !it.favorite
+            newsViewModel.update(it)
         }
     }
 

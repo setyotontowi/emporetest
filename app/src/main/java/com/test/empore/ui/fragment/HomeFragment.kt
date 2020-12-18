@@ -58,15 +58,16 @@ class HomeFragment : Fragment() {
         binding.news.adapter = newsAdapter
 
         newsAdapter.cardListener = {
-            newsViewModel.insert(it)
+            newsViewModel.insert(it, null)
             val intent = Intent(context, NewsActivity::class.java)
             intent.putExtra("URL", it.url)
             startActivity(intent)
         }
 
-        newsAdapter.favListener = {
-            it.favorite = true
-            newsViewModel.insert(it)
+        newsAdapter.favListener = { item ->
+            newsViewModel.insert(item, callback = {
+                item.id = it.toInt()
+            })
         }
     }
 

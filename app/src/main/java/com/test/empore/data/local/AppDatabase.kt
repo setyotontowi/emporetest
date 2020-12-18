@@ -9,7 +9,7 @@ import com.test.empore.data.model.News
 import javax.inject.Singleton
 
 @Singleton
-@Database(entities = [News::class], version = 2)
+@Database(entities = [News::class], version = 4)
 @TypeConverters(Converter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun newsDao(): NewsDao

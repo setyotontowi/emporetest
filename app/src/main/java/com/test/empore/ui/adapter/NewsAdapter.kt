@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.test.empore.R
@@ -17,7 +18,7 @@ import com.test.empore.ui.activity.NewsActivity
 
 class NewsAdapter(
     private val context: Context,
-    private val news: List<News>
+    private val news: MutableList<News>
 ): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     var cardListener: ((item: News)->Unit)?=null
@@ -33,6 +34,11 @@ class NewsAdapter(
         holder.title.text = item.title
         holder.meta.text = item.publishedAt
         holder.source.text = item.source.name
+        if(item.favorite){
+            holder.favorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite))
+        } else {
+            holder.favorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_border))
+        }
 
         Glide.with(context).load(item.imageUrl).into(holder.thumbnail)
 
@@ -41,6 +47,14 @@ class NewsAdapter(
         }
 
         holder.favorite.setOnClickListener {
+            if(!item.favorite){
+                // Become favorite
+                holder.favorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite))
+            } else {
+                // Become not favorite
+                holder.favorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_border))
+            }
+            item.favorite = !item.favorite
             favListener?.invoke(item)
         }
     }

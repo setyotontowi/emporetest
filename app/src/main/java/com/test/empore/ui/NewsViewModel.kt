@@ -44,9 +44,22 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    fun insert(news: News){
+    fun insert(news: News, callback: ((id:Long) -> Unit)?){
         viewModelScope.launch {
-            localRepository.insert(news)
+            val id = localRepository.insert(news)
+            callback?.invoke(id)
+        }
+    }
+
+    fun update(news: News){
+        viewModelScope.launch {
+            localRepository.update(news)
+        }
+    }
+
+    fun deleteAll(){
+        viewModelScope.launch {
+            localRepository.deleteAll()
         }
     }
 

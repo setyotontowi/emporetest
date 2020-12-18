@@ -7,9 +7,14 @@ import javax.inject.Inject
 class LocalRepository @Inject constructor(
     private val newsDao: NewsDao
 ) {
-    suspend fun insert(news: News) = newsDao.insert(news)
 
     fun getFavorite() = newsDao.getFavorites
 
     suspend fun getRecent() = newsDao.getRecent()
+
+    suspend fun insert(news: News): Long = newsDao.insert(news)
+
+    suspend fun update(news: News) = newsDao.update(news)
+
+    suspend fun deleteAll() = newsDao.deleteAll()
 }

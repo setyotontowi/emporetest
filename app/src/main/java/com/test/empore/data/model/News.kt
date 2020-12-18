@@ -28,6 +28,4 @@ data class News(
     var content: String?,
     @ColumnInfo(name = "favorite")
     var favorite: Boolean = false
-) {
-    constructor() :this(0, Source(), null, null, null, "", null, null, null, false )
-}
+)
