@@ -11,6 +11,13 @@ interface NewsService {
     @GET("{endpoints}")
     suspend fun getNews(
         @Path("endpoints") endPoints: String,
-        @Query("country") country:String): Result<News>
+        @Query("country") country:String
+    ): Result<News>
+
+    @GET("everything")
+    suspend fun search(
+        @Query("q") q:String,
+        @Query("page") page:String
+    ): Result<News>
 
 }

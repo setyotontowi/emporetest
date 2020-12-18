@@ -30,6 +30,13 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    fun search(q: String, page:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = newsRepository.search(q, page)
+            _news.postValue(result)
+        }
+    }
+
     fun getFavorites(){
         viewModelScope.launch(Dispatchers.IO) {
             val result = localRepository.getFavorite()

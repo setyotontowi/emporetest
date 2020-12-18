@@ -6,13 +6,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.MenuItem.OnActionExpandListener
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
-import android.widget.LinearLayout
-import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.test.empore.App
 import com.test.empore.R
 import com.test.empore.data.model.News
@@ -35,11 +37,17 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val news :MutableList<News> = ArrayList()
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private var isSearch = false
+    private lateinit var search:String
+    private var iteration = 1
     private val TAG = "HomeFragment"
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -48,6 +56,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity?.application as App).appComponent.inject(this)
+        setHasOptionsMenu(true)
 
         initObserver()
         initAdapter()
@@ -56,8 +65,11 @@ class HomeFragment : Fragment() {
 
     private fun initAdapter() {
         newsAdapter = NewsAdapter(requireContext(), news)
-        binding.news.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL, false)
+        layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL, false
+        )
+        binding.news.layoutManager = layoutManager
         binding.news.adapter = newsAdapter
 
         newsAdapter.cardListener = {
@@ -72,12 +84,22 @@ class HomeFragment : Fragment() {
                 item.id = it.toInt()
             })
         }
+
+        binding.news.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (layoutManager.findLastVisibleItemPosition() == news.size - 1 && isSearch) {
+                    newsViewModel.search(search, iteration++.toString())
+                    Log.d(TAG, "onScrolled: $iteration")
+                }
+            }
+        })
     }
 
     private fun initObserver() {
         newsViewModel.get("top-headlines", "id")
         newsViewModel.news.observe(viewLifecycleOwner, {
-            news.clear()
+            if(!isSearch) news.clear()
             news.addAll(it.articles)
             newsAdapter.notifyDataSetChanged()
             binding.placeholder.stopShimmerAnimation()
@@ -99,14 +121,41 @@ class HomeFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_actionbar, menu)
-
-        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        
         val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
         val menuItem = menu.findItem(R.id.menu_search) as MenuItem
 
         searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        menuItem.setOnActionExpandListener(object: OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                isSearch = true
+                return true
+            }
 
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                isSearch = false
+                iteration = 1
+                return true
+            }
+
+        })
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, "onQueryTextSubmit: $query")
+                isSearch = true
+                search = query!!
+                news.clear()
+                newsViewModel.search(query, "1")
+                return true
+            }
+        })
     }
+
 
     companion object {
         /**
