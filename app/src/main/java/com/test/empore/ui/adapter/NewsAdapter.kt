@@ -13,8 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.test.empore.R
+import com.test.empore.data.local.Converter
 import com.test.empore.data.model.News
 import com.test.empore.ui.activity.NewsActivity
+import javax.inject.Inject
 
 class NewsAdapter(
     private val context: Context,
@@ -23,6 +25,7 @@ class NewsAdapter(
 
     var cardListener: ((item: News)->Unit)?=null
     var favListener:  ((item: News)->Unit)?=null
+    val converter: Converter = Converter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.news_view, parent, false)
@@ -32,7 +35,7 @@ class NewsAdapter(
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = news[position]
         holder.title.text = item.title
-        holder.meta.text = item.publishedAt
+        holder.meta.text = converter.convertDateFormat(item.publishedAt!!)
         holder.source.text = item.source.name
         if(item.favorite){
             holder.favorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite))

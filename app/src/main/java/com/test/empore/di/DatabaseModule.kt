@@ -3,6 +3,7 @@ package com.test.empore.di
 import android.content.Context
 import androidx.room.Room
 import com.test.empore.data.local.AppDatabase
+import com.test.empore.data.local.Converter
 import com.test.empore.data.local.dao.NewsDao
 import dagger.Module
 import dagger.Provides
@@ -21,4 +22,5 @@ object DatabaseModule {
 
     @Provides
     fun providesNewsDao(db: AppDatabase): NewsDao = db.newsDao()
+
 }
