@@ -1,17 +1,20 @@
 package com.test.empore.ui.fragment
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.empore.App
+import com.test.empore.R
 import com.test.empore.data.model.News
 import com.test.empore.databinding.FragmentHomeBinding
 import com.test.empore.ui.NewsViewModel
@@ -91,6 +94,18 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         binding.placeholder.stopShimmerAnimation()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_actionbar, menu)
+
+        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
+        val menuItem = menu.findItem(R.id.menu_search) as MenuItem
+
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+
     }
 
     companion object {

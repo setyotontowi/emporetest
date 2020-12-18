@@ -2,6 +2,7 @@ package com.test.empore.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +16,7 @@ import com.test.empore.ui.fragment.RecentFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         (application as App).appComponent.inject(this)
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         /* Bottom Navigation Bar Setup */
         val navHostFragment =
@@ -42,14 +47,17 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_home -> {
                     openFragment(homeFragment)
+                    toolbar.title = "Home"
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_favorite -> {
                     openFragment(favoriteFragment)
+                    toolbar.title = "Favorit"
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_recent -> {
                     openFragment(recentFragment)
+                    toolbar.title = "Recent View"
                     return@setOnNavigationItemSelectedListener true
                 }
             }
